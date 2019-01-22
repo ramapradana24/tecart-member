@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -68,5 +69,38 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+    public function regist(Request $request){
+        $valid = Validator::make($request->all(), [
+            'nim' => 'required|numeric|unique:member,nim_member',
+            'nama'  => 'required',
+            'gender'    => 'required',
+            'username'  => 'required|unique:member,username',
+            'password'  => 'required|confirmed|min:8',
+            'lineID'    => 'required'
+        ]);
+
+        if($valid->fails()){
+            return response()->json([
+                'success'   => false,
+                'error'     => $valid->errors()
+            ], 500);
+        }
+
+        $user = new User;
+        $user->nim_member = $request->nim;
+        $user->nama_member = $request->nama;
+        $user->id_line = $request->lineID;
+        $user->username = $request->username;
+        $user->password = bcrypt($request->password);
+        $user->jk_member = $request->gender;
+        $user->join_at = date("Y-m-d H:i:s");
+        $user->save();
+
+        return response()->json([
+            'success'   => true
+        ]);
+
     }
 }

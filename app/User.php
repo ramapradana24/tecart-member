@@ -9,6 +9,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use Notifiable;
+    protected $table = 'member';
+    protected $primaryKey = "member_id";
 
     /**
      * The attributes that are mass assignable.
@@ -27,4 +29,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function interest(){
+        return $this->belongsTo('App\Interest', 'interest_id');
+    }
 }
