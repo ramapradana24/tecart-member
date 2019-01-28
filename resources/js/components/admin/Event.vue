@@ -32,22 +32,28 @@
             </p>
 
             <div class="pull-right">
+              <button class="btn btn-sm btn-space btn-danger" @click="del(key)">Delete</button>
               <button class="btn btn-sm btn-space btn-default" @click="edit(key)">Edit</button>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="fab">+</div>
+    <div class="fab" @click="openModalAdd">+</div>
 
-    <ModalEdit :openmodaledit="setSelect2" @closeRequest="closeModalEdit"></ModalEdit>
+    <ModalEdit :openmodaledit="setSelect2" @reloadPage="load" @closeRequest="closeModalEdit"></ModalEdit>
+    <ModalAdd @reloadPage="load"></ModalAdd>
+    <ModalDelete @reloadPage="load"></ModalDelete>
   </div>
 </template>
 
 <script>
 let ModalEdit = require("./ModalEditEvent.vue");
+let ModalAdd = require("./ModalAddEvent.vue");
+let ModalDelete = require("./ModalDeleteEvent.vue");
+
 export default {
-  components: { ModalEdit },
+  components: { ModalEdit, ModalAdd, ModalDelete },
   data() {
     return {
       events: {},
@@ -70,7 +76,7 @@ export default {
           this.events = response.data.events;
           this.interest = response.data.interest;
 
-          this.$children[0].interests = this.interest;
+          this.$children[0].interests = this.$children[1].interests = this.interest;
         })
         .catch(error => {
           this.errorLoading = true;
@@ -90,6 +96,13 @@ export default {
     closeModalEdit() {
       this.setSelect2 = false;
       $("#md-default").modal("toggle");
+    },
+    openModalAdd() {
+      $("#md-add").modal("show");
+    },
+    del(key) {
+      this.$children[2].event = this.events[key];
+      $("#md-del").modal("show");
     }
   }
 };

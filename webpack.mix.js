@@ -14,3 +14,7 @@ const mix = require('laravel-mix');
 mix.js('resources/js/auth.js', 'public/js');
 mix.js('resources/js/profile.js', 'public/js');
 mix.js('resources/js/event.js', 'public/js');
+mix.js('resources/js/member.js', 'public/js');
+mix.js('resources/js/findevent.js', 'public/js');
+mix.js('resources/js/myevent.js', 'public/js');
+mix.js('resources/js/evvalidation.js', 'public/js');

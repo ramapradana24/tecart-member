@@ -1,6 +1,6 @@
 <template>
   <div
-    id="md-default"
+    id="md-add"
     data-keyboard="false"
     data-backdrop="static"
     role="dialog"
@@ -12,7 +12,7 @@
           <button type="button" @click="close" aria-hidden="true" class="close">
             <span class="mdi mdi-close"></span>
           </button>
-          <h3 class="modal-title text-uppercase">edit Event</h3>
+          <h3 class="modal-title text-uppercase">add Event</h3>
         </div>
         <div class="modal-body">
           <div class="form-group">
@@ -29,7 +29,7 @@
             <label>Interest</label>
             <select
               class="select2"
-              id="interest_edit"
+              id="interest_add"
               style="width:100%"
               v-model="event.interest_id"
             >
@@ -84,8 +84,8 @@
             <label>Date & Time</label>
             <input
               type="text"
-              id="datetime_edit"
               class="form-control datetimepicker"
+              id="datetime_add"
               v-model="event.event_datetime"
             >
 
@@ -101,7 +101,7 @@
           <button
             type="button"
             class="btn btn-space btn-primary"
-            @click="update"
+            @click="insert"
             :disabled="proceedBtn != 'Proceed'"
           >{{ proceedBtn }}</button>
         </div>
@@ -112,67 +112,53 @@
 
 <script>
 export default {
-  props: ["openmodaledit"],
   data() {
     return {
+      errors: {},
       interests: {},
       event: {},
-      errors: {},
       proceedBtn: "Proceed"
     };
   },
-  watch: {
-    openmodaledit() {
-      if (this.openmodaledit) {
-        this.$nextTick(() => {
-          $(".select2").select2();
-        });
-      }
-    }
+  mounted() {
+    this.$nextTick(() => {
+      $(".select2").select2();
+    });
   },
-  mounted() {},
   methods: {
     close() {
-      this.$emit("closeRequest");
-      this.errors = {};
-      if (this.anyError) this.$parent.user = this.temp;
+      $("#md-add").modal("toggle");
     },
-    update() {
-      this.proceedBtn = "loading...";
+    insert() {
       this.errors = {};
-      this.event.interest_id = document.getElementById("interest_edit").value;
-      this.event.event_datetime = document.getElementById(
-        "datetime_edit"
-      ).value;
-
+      this.event.interest_id = document.getElementById("interest_add").value;
+      this.event.event_datetime = document.getElementById("datetime_add").value;
       axios
-        .patch(`/event/${this.event.event_id}`, this.event)
+        .post("/event", this.event)
         .then(response => {
-          this.proceedBtn = "Proceed";
-          if (response.data.success) {
+          if (response.data.status) {
             $.gritter.add({
               title: "Success",
               text: response.data.msg,
               class_name: "color success"
             });
 
-            $("#md-default").modal("toggle");
+            $("#md-add").modal("toggle");
             this.$emit("reloadPage");
           } else {
             $.gritter.add({
-              title: "Error",
+              title: "Warning",
               text: "Unknown Error!",
               class_name: "color danger"
             });
           }
         })
         .catch(error => {
-          this.proceedBtn = "Proceed";
-          if (!error.response.data.success && error.response.data.errors) {
+          if (!error.response.data.status) {
             this.errors = error.response.data.errors;
           } else {
             $.gritter.add({
-              title: "Error",
+              title: "Warning",
               text: "Internal Server Error!",
               class_name: "color danger"
             });

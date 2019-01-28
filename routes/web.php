@@ -40,6 +40,11 @@ Route::get('/', function(){
 Route::middleware(['login'])->group(function(){
     Route::resource('profile', 'ProfileController');    
     Route::resource('event', 'EventController');
+    Route::resource('member', 'MemberController');
+    Route::resource('findevent', 'FindEventController');
+    Route::post('join', 'FindEventController@join');
+    Route::resource('myevent', 'MyEventController');
+    Route::resource('event-validation', 'EventValidationController');
 });
 
 
