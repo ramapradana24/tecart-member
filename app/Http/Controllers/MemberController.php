@@ -87,7 +87,17 @@ class MemberController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        #update status admin
+        if(isset($request->s) && $request->s == 1){
+            $member = Member::find($id);
+            $member->is_admin = ($member->is_admin == 1) ? 0 : 1;
+            $member->save();
+
+            return response()->json([
+                'success'   => true,
+                'msg'       => 'Change member admin status success'
+            ]);
+        }
     }
 
     /**

@@ -17,6 +17,7 @@
                 <tr>
                   <th>#</th>
                   <th>Event Name</th>
+                  <th>Participant</th>
                   <th>Interest</th>
                   <th>Location</th>
                   <th>Datetime</th>
@@ -27,11 +28,15 @@
                 <tr v-for="(item, key) in events" :key="key">
                   <td>{{ key + 1 }}</td>
                   <td>{{ item.event_name }}</td>
+                  <td>{{ item.going_count }}</td>
                   <td>{{ item.interest.interest_name }}</td>
                   <td>{{ item.event_location }}</td>
                   <td>{{ convertDate(item.event_datetime) }}</td>
                   <td>
-                    <button class="btn btn-default btn-sm">validate</button>
+                    <router-link
+                      :to="{name:'detail', params:{id: item.event_id}}"
+                      class="btn btn-default btn-sm"
+                    >validate</router-link>
                   </td>
                 </tr>
               </tbody>

@@ -1,9 +1,9 @@
 {
     "/js/findevent.js": "/js/findevent.js",
     "/js/event.js": "/js/event.js",
+    "/js/evvalidation.js": "/js/evvalidation.js",
     "/js/myevent.js": "/js/myevent.js",
     "/js/auth.js": "/js/auth.js",
     "/js/profile.js": "/js/profile.js",
-    "/js/evvalidation.js": "/js/evvalidation.js",
     "/js/member.js": "/js/member.js"
 }

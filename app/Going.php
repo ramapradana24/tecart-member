@@ -12,4 +12,10 @@ class Going extends Model
     public function event(){
         return $this->belongsTo('App\Event', 'event_id');
     }
+
+    public function member(){
+        return $this->belongsTo('App\Member', 'member_id')->with(['interest' => function($q){
+            $q->selectRaw('interest_id, interest_name');
+        }]);
+    }
 }

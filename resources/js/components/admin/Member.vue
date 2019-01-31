@@ -50,26 +50,37 @@
       <div class="col-sm-12">
         <div class="panel panel-default panel-table">
           <div class="panel-body">
-            <table id="table1" class="table table-hover table-fw-widget">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>NIM</th>
-                  <th>Name</th>
-                  <th>ID LINE</th>
-                  <th>Interest</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(item, key) in members" :key="key">
-                  <td>{{ key + 1 }}</td>
-                  <td>{{ item.nim_member }}</td>
-                  <td>{{ item.nama_member }}</td>
-                  <td>{{ item.id_line }}</td>
-                  <td>{{ item.interest.interest_name }}</td>
-                </tr>
-              </tbody>
-            </table>
+            <div class="table-responsive">
+              <table id="table1" class="table table-hover table-fw-widget">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>NIM</th>
+                    <th>Name</th>
+                    <th>ID LINE</th>
+                    <th>Interest</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(item, key) in members" :key="key">
+                    <td>{{ key + 1 }}</td>
+                    <td>{{ item.nim_member }}</td>
+                    <td>{{ item.nama_member }}</td>
+                    <td>{{ item.id_line }}</td>
+                    <td>{{ item.interest.interest_name }}</td>
+                    <td>
+                      <button
+                        class="btn btn-sm"
+                        @click="changeAdminStatus(key)"
+                        :disabled="loadingOnAdminButton[key]"
+                        :class="{'btn-default' : item.is_admin == 0, 'btn-danger' : item.is_admin == 1}"
+                      >{{ (loadingOnAdminButton[key]) ? 'loading..' : (item.is_admin == 1) ? 'Set Member Biasa' : 'Set Admin' }}</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -88,7 +99,8 @@ export default {
       otherMemberCount: {},
       ready: false,
       errorLoading: false,
-      setSelect2: false
+      setSelect2: false,
+      loadingOnAdminButton: []
     };
   },
   mounted() {
@@ -114,14 +126,34 @@ export default {
             });
 
             $("#table1").dataTable();
+
+            this.loadingOnAdminButton = this.members.map(() => false);
           });
         })
         .catch(error => {
           this.errorLoading = true;
         });
     },
+    changeBtnAdminLoadingState(key) {
+      Vue.set(this.loadingOnAdminButton, key, !this.loadingOnAdminButton[key]);
+    },
     progressInterestCount(all, count) {
       return "width:" + Math.round((count / all) * 100) + "%";
+    },
+    changeAdminStatus(key) {
+      this.changeBtnAdminLoadingState(key);
+      axios
+        .patch("/member/" + this.members[key].member_id, { s: 1 })
+        .then(response => {
+          this.changeBtnAdminLoadingState(key);
+          if (response.data.success) {
+            this.members[key].is_admin =
+              this.members[key].is_admin == 1 ? 0 : 1;
+          }
+        })
+        .catch(error => {
+          this.changeBtnAdminLoadingState(key);
+        });
     }
   }
 };

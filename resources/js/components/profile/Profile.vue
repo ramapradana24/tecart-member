@@ -119,7 +119,7 @@
             <div class="panel-body">
               <ul class="user-timeline" v-if="going.length > 0">
                 <li class :class="{ 'latest' : key == 0 }" v-for="(item, key) in going" :key="key">
-                  <div class="user-timeline-date">{{ convertDate(item.event.event_date) }}</div>
+                  <div class="user-timeline-date">{{ convertDate(item.event.event_datetime) }}</div>
                   <div class="user-timeline-title">{{ item.event.event_name }}</div>
                   <div class="user-timeline-description">{{ item.event.event_desc }}</div>
                 </li>
