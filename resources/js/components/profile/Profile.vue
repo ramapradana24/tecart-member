@@ -75,6 +75,18 @@
                     </td>
                     <td>{{ user.nim_member }}</td>
                   </tr>
+
+                  <tr>
+                    <td class="icon">
+                      <span class="mdi mdi-email"></span>
+                    </td>
+                    <td class="item">
+                      Email
+                      <span class="icon s7-portfolio"></span>
+                    </td>
+                    <td>{{ user.email }}</td>
+                  </tr>
+
                   <tr>
                     <td class="icon">
                       <span class="mdi mdi-accounts-list"></span>

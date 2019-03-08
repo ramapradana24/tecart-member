@@ -78,7 +78,8 @@ class RegisterController extends Controller
             'gender'    => 'required',
             'username'  => 'required|unique:member,username',
             'password'  => 'required|confirmed|min:8',
-            'lineID'    => 'required'
+            'lineID'    => 'required',
+            'email'     => 'email'
         ]);
 
         if($valid->fails()){
@@ -96,6 +97,7 @@ class RegisterController extends Controller
         $user->password = bcrypt($request->password);
         $user->jk_member = $request->gender;
         $user->join_at = date("Y-m-d H:i:s");
+        $user->email = $request->email;
         $user->save();
 
         return response()->json([

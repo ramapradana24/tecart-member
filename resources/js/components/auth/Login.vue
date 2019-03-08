@@ -31,9 +31,9 @@
               type="text"
               name="username"
               required
-              placeholder="Username"
+              placeholder="NIM"
               class="form-control"
-              v-model="credentials.username"
+              v-model="credentials.nim_member"
             >
 
             <p
@@ -59,11 +59,12 @@
             >{{ errors.password[0] }}</p>
           </div>
 
+          <router-link to="/forget-pass">Forget password?</router-link>
           <div class="form-group xs-pt-10">
             <button
               type="button"
               class="btn btn-block btn-primary btn-xl"
-              style="margin-bottom:20px;"
+              style="margin-bottom:20px;margin-top:20px"
               @click="login"
               :disabled="loginBtnMsg != 'Login'"
             >{{ loginBtnMsg }}</button>
@@ -87,7 +88,7 @@ export default {
         password: []
       },
       credentials: {
-        username: "",
+        nim_member: "",
         password: ""
       },
       anyErrors: false,

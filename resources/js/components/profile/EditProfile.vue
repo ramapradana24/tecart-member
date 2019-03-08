@@ -66,7 +66,7 @@
             <label>Username</label>
             <input
               type="text"
-              placeholder="Enter email"
+              placeholder="Enter username"
               class="form-control"
               v-model="userProfile.username"
             >
@@ -76,6 +76,18 @@
               style="margin-top:5px"
               v-if="errors.username"
             >{{ errors.username[0] }}</p>
+          </div>
+
+          <div class="form-group">
+            <label>Email</label>
+            <input
+              type="email"
+              placeholder="Enter email"
+              class="form-control"
+              v-model="userProfile.email"
+            >
+
+            <p class="text-danger" style="margin-top:5px" v-if="errors.email">{{ errors.email[0] }}</p>
           </div>
 
           <div class="form-group">

@@ -109,13 +109,15 @@ class ProfileController extends Controller
             'nama_member'   => 'required',
             'username'       => 'required|unique:member,username,'. $id . ',member_id',
             'jk_member'     => 'required',
-            'interest_id'   => 'required'
+            'interest_id'   => 'required',
+            'email'         => 'email',
         ],[
             'nim_member.required'   => 'NIM is required',
             'id_line.required'   => 'ID LINE is required',
             'nama_member.required'   => 'Your name is required',
             'jk_member.required'   => 'Your gender is required',
             'interest_id.required'   => 'Pick one of those interest',
+            'email.email'       => 'Wrong email format',
         ]);
 
         if($valid->fails()){
@@ -132,6 +134,7 @@ class ProfileController extends Controller
         $user->username = $request->username;
         $user->jk_member = $request->jk_member;
         $user->interest_id = $request->interest_id;
+        $user->email = $request->email;
         $user->save();
 
         return response()->json([

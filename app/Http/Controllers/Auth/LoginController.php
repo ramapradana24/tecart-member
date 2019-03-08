@@ -36,7 +36,8 @@ class LoginController extends Controller
      */
 
     public function loginMember(Request $request){
-        if(Auth::attempt($request->only('username', 'password'))){
+        // return $request;
+        if(Auth::attempt($request->only('nim_member', 'password'))){
             return Auth::user();
         }else{
             return response()->json([

@@ -37,6 +37,11 @@ Route::get('/', function(){
     return redirect(route('profile.index'));
 })->middleware('login');
 
+Route::prefix('forget-pass')->group(function(){
+    Route::get('/', 'ForgetPasswordController@index');
+    Route::post('/', 'ForgetPasswordController@search');
+});
+
 Route::middleware(['login'])->group(function(){
     Route::resource('profile', 'ProfileController');    
     Route::resource('findevent', 'FindEventController');

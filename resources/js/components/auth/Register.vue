@@ -119,6 +119,22 @@
             >fill your ID LINE!</p>
           </div>
 
+          <div class="form-group">
+            <input
+              type="text"
+              name="username"
+              placeholder="Email"
+              class="form-control"
+              v-model="member.email"
+            >
+
+            <p
+              class="text-danger"
+              style="margin-top:5px"
+              v-if="!memberCheck.email || errors.email"
+            >email is required for security reason.</p>
+          </div>
+
           <div class="form-group row signup-password">
             <div class="col-xs-6">
               <input
@@ -190,7 +206,8 @@ export default {
         password_confirmation: "",
         gender: "",
         tac: "",
-        lineID: ""
+        lineID: "",
+        email: ""
       },
       memberCheck: {
         nim: true,
@@ -200,7 +217,8 @@ export default {
         confirm_password: true,
         gender: true,
         tac: true,
-        lineID: true
+        lineID: true,
+        email: true
       },
       allClear: true,
       errors: {},
@@ -239,6 +257,11 @@ export default {
         this.memberCheck.lineID = false;
         this.allClear = false;
       } else this.memberCheck.lineID = true;
+
+      if (this.member.email == "") {
+        this.memberCheck.email = false;
+        this.allClear = false;
+      } else this.memberCheck.email = true;
 
       if (this.member.password == "") {
         this.memberCheck.password = false;
